@@ -1,12 +1,12 @@
 package com.springboot.MyTodoList.util;
 
-import com.springboot.MyTodoList.model.ToDoItem;
+// import com.springboot.MyTodoList.model.ToDoItem;
 import com.springboot.MyTodoList.service.DeepSeekService;
 import com.springboot.MyTodoList.service.ToDoItemService;
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+// import java.time.OffsetDateTime;
+// import java.util.ArrayList;
+// import java.util.List;
+// import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -77,6 +77,7 @@ public class BotActions{
     }
 
     public void fnDone() {
+        /*
         if (!(requestText.indexOf(BotLabels.DONE.getLabel()) != -1) || exit) 
             return;
             
@@ -94,9 +95,11 @@ public class BotActions{
             logger.error(e.getLocalizedMessage(), e);
         }
         exit = true;
+        */
     }
 
     public void fnUndo() {
+        /*
         if (requestText.indexOf(BotLabels.UNDO.getLabel()) == -1 || exit)
             return;
 
@@ -115,9 +118,11 @@ public class BotActions{
             logger.error(e.getLocalizedMessage(), e);
         }
         exit = true;
+        */
     }
 
     public void fnDelete(){
+        /*
         if (requestText.indexOf(BotLabels.DELETE.getLabel()) == -1 || exit)
             return;
 
@@ -133,6 +138,7 @@ public class BotActions{
             logger.error(e.getLocalizedMessage(), e);
         }
         exit = true;
+        */
     }
 
     public void fnHide(){
@@ -145,6 +151,7 @@ public class BotActions{
     }
 
     public void fnListAll(){
+        /*
         if (!(requestText.equals(BotCommands.TODO_LIST.getCommand())
 				|| requestText.equals(BotLabels.LIST_ALL_ITEMS.getLabel())
 				|| requestText.equals(BotLabels.MY_TODO_LIST.getLabel())) || exit)
@@ -203,6 +210,7 @@ public class BotActions{
         //
         BotHelper.sendMessageToTelegram(chatId, BotLabels.MY_TODO_LIST.getLabel(), telegramClient,  keyboardMarkup);//
         exit = true;
+        */
     }
 
     public void fnAddItem(){
@@ -216,6 +224,7 @@ public class BotActions{
     }
 
     public void fnElse(){
+        /*
         if(exit)
             return;
         ToDoItem newItem = new ToDoItem();
@@ -225,6 +234,7 @@ public class BotActions{
         todoService.addToDoItem(newItem);
 
         BotHelper.sendMessageToTelegram(chatId, BotMessages.NEW_ITEM_ADDED.getMessage(), telegramClient, null);
+        */
     }
 
     public void fnLLM(){

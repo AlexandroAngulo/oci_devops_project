@@ -3,8 +3,6 @@ package com.springboot.MyTodoList.service;
 import com.springboot.MyTodoList.model.User;
 import com.springboot.MyTodoList.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,50 +14,19 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<User> findAll(){
-        List<User> users = userRepository.findAll();
-        return users;
+    public User saveUser(User user) {
+        return userRepository.save(user);
     }
 
-    public ResponseEntity<User> getUserById(int id){
-        Optional<User> userById = userRepository.findById(id);
-        if (userById.isPresent()){
-            return new ResponseEntity<>(userById.get(), HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
-
-    public User addUser(User newUser){
-        return userRepository.save(newUser);
+    public Optional<User> getUserById(Long id) {
+        return userRepository.findById(id);
     }
 
-    public User test(){
-        User newUser = new User(88,"someNumber","pwd");
-
-        return userRepository.save(newUser);
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
     }
-
-    public boolean deleteUser(int id){
-        try{
-            userRepository.deleteById(id);
-            return true;
-        }catch(Exception e){
-            return false;
-        }
-    }
-    public User updateUser(int id, User user2update){
-        Optional<User> dbUser = userRepository.findById(id);
-        if(dbUser.isPresent()){
-            User user = dbUser.get();
-            user.setID(id);
-            user.setPhoneNumber(user2update.getPhoneNumber());
-            user.setUserPassword(user2update.getUserPassword());
-            return userRepository.save(user);
-        }else{
-            return null;
-        }
-    }
-
 }

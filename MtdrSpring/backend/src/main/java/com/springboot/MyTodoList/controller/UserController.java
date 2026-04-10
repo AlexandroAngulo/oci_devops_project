@@ -1,4 +1,5 @@
 package com.springboot.MyTodoList.controller;
+
 import com.springboot.MyTodoList.model.User;
 import com.springboot.MyTodoList.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,68 +9,60 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class UserController {
+
     @Autowired
     private UserService userService;
 
-    //@CrossOrigin
     @GetMapping(value = "/users")
-    public List<User> getAllUsers(){
-        return userService.findAll();
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
     }
 
-    //@CrossOrigin
     @GetMapping(value = "/users/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable int id){
-        try{
-            ResponseEntity<User> responseEntity = userService.getUserById(id);
-            return new ResponseEntity<User>(responseEntity.getBody(), HttpStatus.OK);
-        }catch (Exception e){
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        Optional<User> userById = userService.getUserById(id);
+        if (userById.isPresent()) {
+            return new ResponseEntity<>(userById.get(), HttpStatus.OK);
+        } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-    //@CrossOrigin
+
     @PostMapping(value = "/adduser")
-    public ResponseEntity<User> addUser(@RequestBody User newUser) throws Exception{
-        User dbUser = userService.addUser(newUser);
+    public ResponseEntity<User> addUser(@RequestBody User newUser) {
+        User dbUser = userService.saveUser(newUser);
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("location",""+dbUser.getID());
-        responseHeaders.set("Access-Control-Expose-Headers","location");
-        //URI location = URI.create(""+td.getID())
+        responseHeaders.set("location", "" + dbUser.getUserId());
+        responseHeaders.set("Access-Control-Expose-Headers", "location");
 
         return ResponseEntity.ok()
-                .headers(responseHeaders).build();
+                .headers(responseHeaders)
+                .body(dbUser);
     }
-    //@CrossOrigin
-    @PutMapping(value = "updateUser/{id}")
-    public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable int id){
-        try{
-            User dbUser = userService.updateUser(id, user);
-            
-            return new ResponseEntity<>(dbUser,HttpStatus.OK);
-        }catch (Exception e){
+
+    @PutMapping(value = "/updateUser/{id}")
+    public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable Long id) {
+        Optional<User> dbUserOpt = userService.getUserById(id);
+        if (dbUserOpt.isPresent()) {
+            user.setUserId(id);
+            User updatedUser = userService.saveUser(user);
+            return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+        } else {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
-    //@CrossOrigin
-    @DeleteMapping(value = "deleteUser/{id}")
-    public ResponseEntity<Boolean> deleteUser(@PathVariable("id") int id){
-        Boolean flag = false;
-        try{
-            flag = userService.deleteUser(id);
-            return new ResponseEntity<>(flag, HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(flag,HttpStatus.NOT_FOUND);
+
+    @DeleteMapping(value = "/deleteUser/{id}")
+    public ResponseEntity<Boolean> deleteUser(@PathVariable Long id) {
+        try {
+            userService.deleteUser(id);
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
         }
     }
-
-
-    @GetMapping(value = "/unitTestAdd")
-    public User test(){
-        return userService.test();
-    }
-
-
 }

@@ -49,3 +49,14 @@ frontend/npm-debug.log*
 frontend/yarn-debug.log*
 frontend/yarn-error.log*
 /MtdrSpring/backend/wallet
+
+# Archivos con datos privados
+/MtdrSpring/backend/src/main/resources/application.properties
+/MtdrSpring/utils/db-setup.sh
+/MtdrSpring/terraform/containerengine.tf
+
+# Archivos con datos privados
+/MtdrSpring/backend/src/main/resources/application.properties
+/MtdrSpring/utils/db-setup.sh
+/MtdrSpring/terraform/containerengine.tf
+/MtdrSpring/backend/DockerfileDev
